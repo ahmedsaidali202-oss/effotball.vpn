@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Protect Your PES Account & Online Privacy | Gaming VPN</title>
+  <meta name="description" content="Keep your eFootball / PES account safe and secure on public Wi-Fi with high-speed encryption.">
+  
+  <!-- Fonts & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* ==========================================
+       CSS VARIABLES & BASE STYLES
+       ========================================== */
+    :root {
+      --bg-dark: #080B11;
+      --card-bg: rgba(18, 26, 43, 0.6);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-main: #F3F4F6;
+      --text-muted: #9CA3AF;
+      --neon-blue: #00F0FF;
+      --neon-green: #00FF87;
+      --gradient-accent: linear-gradient(135deg, var(--neon-blue), var(--neon-green));
+      --radius-sm: 8px;
+      --radius-md: 16px;
+      --radius-lg: 24px;
+      --transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Background Ambient Glows */
+    .ambient-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      z-index: -1;
+      opacity: 0.25;
+      pointer-events: none;
+    }
+    .glow-1 { top: -100px; left: -100px; width: 400px; height: 400px; background: var(--neon-blue); }
+    .glow-2 { top: 400px; right: -100px; width: 500px; height: 500px; background: var(--neon-green); }
+
+    /* Layout Utilities */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    section {
+      padding: 80px 0;
+    }
+
+    /* Typography Utilities */
+    .gradient-text {
+      background: var(--gradient-accent);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .section-title {
+      font-size: 2.25rem;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto 48px auto;
+      font-size: 1.05rem;
+    }
+
+    /* Glassmorphism Card Style */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 32px;
+      transition: var(--transition);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px -10px rgba(0, 240, 255, 0.15);
+    }
+
+    /* Button Styles */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--gradient-accent);
+      color: #000;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 18px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 4px 20px rgba(0, 255, 135, 0.3);
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 30px rgba(0, 240, 255, 0.5);
+    }
+
+    /* ==========================================
+       1. HERO SECTION
+       ========================================== */
+    .hero {
+      min-height: 90vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-top: 120px;
+    }
+
+    .hero-content {
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(0, 240, 255, 0.1);
+      border: 1px solid rgba(0, 240, 255, 0.3);
+      border-radius: 30px;
+      font-size: 0.85rem;
+      color: var(--neon-blue);
+      margin-bottom: 24px;
+      font-weight: 600;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.03em;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      margin-bottom: 36px;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* ==========================================
+       2. BENEFITS SECTION
+       ========================================== */
+    .benefits-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 24px;
+    }
+
+    .icon-wrapper {
+      width: 50px;
+      height: 50px;
+      border-radius: var(--radius-sm);
+      background: rgba(0, 240, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+      color: var(--neon-blue);
+    }
+
+    .glass-card:nth-child(even) .icon-wrapper {
+      background: rgba(0, 255, 137, 0.1);
+      color: var(--neon-green);
+    }
+
+    .benefits-grid h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+    }
+
+    .benefits-grid p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* ==========================================
+       3. HOW IT WORKS
+       ========================================== */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 24px;
+      position: relative;
+    }
+
+    .step-number {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--neon-green);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+
+    /* ==========================================
+       4. FEATURES BLOCK
+       ========================================== */
+    .features-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-sm);
+    }
+
+    .feature-item i {
+      color: var(--neon-blue);
+      margin-top: 2px;
+    }
+
+    /* ==========================================
+       5. FAQ SECTION
+       ========================================== */
+    .faq-wrapper {
+      max-width: 750px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      cursor: pointer;
+    }
+
+    .faq-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 600;
+      font-size: 1.1rem;
+    }
+
+    .faq-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, margin-top 0.3s ease;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .faq-item.active .faq-body {
+      max-height: 200px;
+      margin-top: 16px;
+    }
+
+    .faq-item.active i {
+      transform: rotate(180deg);
+    }
+
+    .faq-header i {
+      transition: transform 0.3s ease;
+      color: var(--neon-blue);
+    }
+
+    /* ==========================================
+       6. FOOTER
+       ========================================== */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 60px 0 30px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--text-main);
+    }
+
+    .disclaimer {
+      text-align: center;
+      max-width: 700px;
+      margin: 0 auto 24px;
+      line-height: 1.5;
+      opacity: 0.7;
+    }
+
+    .copyright {
+      text-align: center;
+      opacity: 0.5;
+    }
+
+    /* Animation utility */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      section { padding: 60px 0; }
+      .hero { min-height: 75vh; }
+      .btn-primary { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow glow-1"></div>
+  <div class="ambient-glow glow-2"></div>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="container hero-content fade-in">
+      <div class="badge">
+        <i data-lucide="shield-check" size="16"></i> Verified PES Account Protection
+      </div>
+      <h1>Protect Your PES Account & <span class="gradient-text">Online Privacy</span></h1>
+      <p>Keep your connection secure while gaming and browsing, especially on vulnerable public Wi-Fi networks.</p>
+      
+      <!-- Replace YOUR_AFFILIATE_LINK_HERE with your real link -->
+      <a href="YOUR_AFFILIATE_LINK_HERE" target="_blank" rel="noopener" class="btn-primary">
+        Get Protected Now <i data-lucide="arrow-right"></i>
+      </a>
+    </div>
+  </section>
+
+  <!-- BENEFITS SECTION -->
+  <section>
+    <div class="container">
+      <h2 class="section-title fade-in">Why Gamers Need Protection</h2>
+      <p class="section-subtitle fade-in">Designed to give mobile & PC players maximum security without sacrificing connectivity.</p>
+
+      <div class="benefits-grid">
+        <div class="glass-card fade-in">
+          <div class="icon-wrapper"><i data-lucide="wifi-off"></i></div>
+          <h3>Public Wi-Fi Shield</h3>
+          <p>Prevent hackers from intercepting your data or login credentials when connected to open networks.</p>
+        </div>
+
+        <div class="glass-card fade-in">
+          <div class="icon-wrapper"><i data-lucide="shield"></i></div>
+          <h3>Privacy Protection</h3>
+          <p>Hide your real IP address to mask your actual location and browsing habits from third parties.</p>
+        </div>
+
+        <div class="glass-card fade-in">
+          <div class="icon-wrapper"><i data-lucide="lock"></i></div>
+          <h3>Encrypted Traffic</h3>
+          <p>Bank-grade AES 256-bit encryption safeguards your PES account credentials from sniffing attacks.</p>
+        </div>
+
+        <div class="glass-card fade-in">
+          <div class="icon-wrapper"><i data-lucide="zap"></i></div>
+          <h3>Easy Setup</h3>
+          <p>One-tap connection designed specifically for effortless use on mobile devices and gaming platforms.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS SECTION -->
+  <section>
+    <div class="container">
+      <h2 class="section-title fade-in">How It Works</h2>
+      <p class="section-subtitle fade-in">Secure your connection in less than 2 minutes.</p>
+
+      <div class="steps-grid">
+        <div class="glass-card fade-in">
+          <div class="step-number">Step 01</div>
+          <h3>Click Link</h3>
+          <p>Click "Get Protected Now" to access our exclusive discounted gaming rate.</p>
+        </div>
+
+        <div class="glass-card fade-in">
+          <div class="step-number">Step 02</div>
+          <h3>Choose Plan</h3>
+          <p>Select the subscription plan that fits your privacy needs best.</p>
+        </div>
+
+        <div class="glass-card fade-in">
+          <div class="step-number">Step 03</div>
+          <h3>Install App</h3>
+          <p>Download the app on your mobile device, PC, or console.</p>
+        </div>
+
+        <div class="glass-card fade-in">
+          <div class="step-number">Step 04</div>
+          <h3>Browse Securely</h3>
+          <p>Connect to a server and play eFootball / PES with peace of mind.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES / TECH SPEC BLOCK -->
+  <section>
+    <div class="container">
+      <h2 class="section-title fade-in">Engineered for Performance</h2>
+      <p class="section-subtitle fade-in">Modern technology designed to match high-standards of security.</p>
+
+      <div class="features-list fade-in">
+        <div class="feature-item">
+          <i data-lucide="smartphone"></i>
+          <div>
+            <strong>Mobile-First Design</strong>
+            <p style="font-size:0.85rem; color: var(--text-muted);">Fully optimized interface for iOS & Android devices.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i data-lucide="gamepad-2"></i>
+          <div>
+            <strong>Gaming Optimized</strong>
+            <p style="font-size:0.85rem; color: var(--text-muted);">Ultra-low latency server routing for smooth gameplay.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i data-lucide="sparkles"></i>
+          <div>
+            <strong>Modern UI Engine</strong>
+            <p style="font-size:0.85rem; color: var(--text-muted);">Sleek glassmorphism style built with light-speed code.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <i data-lucide="gauge"></i>
+          <div>
+            <strong>Fast Loading</strong>
+            <p style="font-size:0.85rem; color: var(--text-muted);">Zero unnecessary bloatware for instantaneous load times.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ SECTION -->
+  <section>
+    <div class="container">
+      <h2 class="section-title fade-in">Frequently Asked Questions</h2>
+      <p class="section-subtitle fade-in">Everything you need to know before securing your connection.</p>
+
+      <div class="faq-wrapper fade-in">
+        <div class="glass-card faq-item">
+          <div class="faq-header">
+            <span>What is a VPN?</span>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="faq-body">
+            A VPN (Virtual Private Network) creates an encrypted tunnel between your device and the internet. It protects your personal data from eavesdroppers and hides your IP address.
+          </div>
+        </div>
+
+        <div class="glass-card faq-item">
+          <div class="faq-header">
+            <span>Why should gamers use a VPN?</span>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="faq-body">
+            Gamers use VPNs to protect their accounts against credential theft on public networks, avoid ISP throttling, safeguard against DDoS attacks, and mask their real geographical locations.
+          </div>
+        </div>
+
+        <div class="glass-card faq-item">
+          <div class="faq-header">
+            <span>Is it easy to install?</span>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="faq-body">
+            Yes! You simply download the application on your phone or PC, log in, and tap the "Connect" button. It takes under two minutes from setup to full protection.
+          </div>
+        </div>
+
+        <div class="glass-card faq-item">
+          <div class="faq-header">
+            <span>How does it protect privacy on public Wi-Fi?</span>
+            <i data-lucide="chevron-down"></i>
+          </div>
+          <div class="faq-body">
+            Unsecured public Wi-Fi networks allow hackers to intercept data. A VPN encrypts all traffic leaving your mobile phone, making your passwords and PES login details unreadable to attackers.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BOTTOM SECTION -->
+  <section style="text-align: center;">
+    <div class="container fade-in">
+      <div class="glass-card" style="padding: 60px 20px;">
+        <h2 style="font-size: 2rem; margin-bottom: 16px;">Ready to Secure Your Game?</h2>
+        <p style="color: var(--text-muted); margin-bottom: 30px;">Protect your PES account details and stay safe on any network today.</p>
+        <a href="YOUR_AFFILIATE_LINK_HERE" target="_blank" rel="noopener" class="btn-primary">
+          Get Protected Now <i data-lucide="arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER SECTION -->
+  <footer>
+    <div class="container">
+      <div class="footer-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+      </div>
+      <p class="disclaimer">
+        <strong>Disclaimer:</strong> This page is an independent promotional website created for informational purposes. This site is not affiliated with, endorsed by, or associated with Konami Digital Entertainment, eFootball, or Pro Evolution Soccer (PES).
+      </p>
+      <p class="copyright">&copy; 2026 Promo Page. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- SCRIPTS -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // Accordion Logic for FAQ
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.addEventListener('click', () => {
+        const isActive = item.classList.contains('active');
+        document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+        if (!isActive) {
+          item.classList.add('active');
+        }
+      });
+    });
+
+    // Intersection Observer for Smooth Scroll Animations
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>
